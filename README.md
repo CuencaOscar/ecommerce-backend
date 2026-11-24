@@ -7,6 +7,8 @@ on **PostgreSQL**. It is the backend of [ecommerce-frontend](https://github.com/
 ![Django](https://img.shields.io/badge/Django_REST_Framework-092E20?logo=django&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
 
+![Products endpoint in the DRF browsable API](docs/api-products.png)
+
 ## Features
 
 - Product catalog with name, description, price, stock and creation date.
