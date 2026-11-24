@@ -30,3 +30,13 @@ class ProductApiTests(APITestCase):
         self.client.force_authenticate(staff)
         self.assertEqual(self.client.post("/api/products/", self.payload).status_code, 201)
         self.assertEqual(self.client.delete(f"/api/products/{self.product.pk}/").status_code, 204)
+
+
+class ApiDocsTests(APITestCase):
+    def test_openapi_schema_and_swagger_ui_are_served(self):
+        schema = self.client.get("/api/schema/?format=json")
+        self.assertEqual(schema.status_code, 200)
+        paths = schema.json()["paths"]
+        for path in ("/api/products/", "/api/auth/token/", "/api/cart/", "/api/orders/"):
+            self.assertIn(path, paths)
+        self.assertEqual(self.client.get("/api/docs/").status_code, 200)

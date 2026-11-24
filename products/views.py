@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 from rest_framework.response import Response
@@ -13,6 +14,9 @@ class IsStaffOrReadOnly(BasePermission):
         return request.method in SAFE_METHODS or bool(request.user and request.user.is_staff)
 
 
+@extend_schema(methods=['GET'], tags=['products'], auth=[], responses=ProductSerializer(many=True),
+               operation_id='products_list')
+@extend_schema(methods=['POST'], tags=['products'], request=ProductSerializer, responses={201: ProductSerializer})
 @api_view(['GET', 'POST'])
 @permission_classes([IsStaffOrReadOnly])
 def products_list(request):
@@ -42,6 +46,9 @@ def products_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(tags=['products'], request=ProductSerializer, responses=ProductSerializer)
+@extend_schema(methods=['GET'], tags=['products'], auth=[], responses=ProductSerializer)
+@extend_schema(methods=['DELETE'], tags=['products'], responses={204: None})
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsStaffOrReadOnly])
 def product_detail(request, pk):

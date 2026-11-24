@@ -2,7 +2,8 @@ from decimal import Decimal
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
-from rest_framework import permissions, status
+from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
+from rest_framework import permissions, serializers, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
@@ -12,12 +13,18 @@ from .models import CartItem, Order, OrderItem
 from .serializers import CartItemSerializer, OrderSerializer
 
 
+CartSerializer = inline_serializer("Cart", {
+    "items": CartItemSerializer(many=True), "total": serializers.DecimalField(max_digits=10, decimal_places=2),
+})
+
+
 def _cart_payload(user):
     items = CartItem.objects.filter(user=user).select_related("product")
     total = sum((item.subtotal for item in items), Decimal("0"))
     return {"items": CartItemSerializer(items, many=True).data, "total": f"{total:.2f}"}
 
 
+@extend_schema(tags=["cart"], responses=CartSerializer)
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def cart(request):
@@ -25,6 +32,13 @@ def cart(request):
     return Response(_cart_payload(request.user))
 
 
+@extend_schema(
+    tags=["cart"],
+    request=inline_serializer("AddToCart", {
+        "product_id": serializers.IntegerField(), "quantity": serializers.IntegerField(min_value=1, default=1),
+    }),
+    responses={201: CartSerializer},
+)
 @api_view(["POST"])
 @permission_classes([permissions.IsAuthenticated])
 def add_to_cart(request):
@@ -38,6 +52,11 @@ def add_to_cart(request):
     return Response(_cart_payload(request.user), status=status.HTTP_201_CREATED)
 
 
+@extend_schema(
+    tags=["cart"],
+    request=inline_serializer("CartItemQuantity", {"quantity": serializers.IntegerField(min_value=1)}),
+    responses=CartSerializer,
+)
 @api_view(["PATCH", "DELETE"])
 @permission_classes([permissions.IsAuthenticated])
 def cart_item(request, pk):
@@ -52,6 +71,18 @@ def cart_item(request, pk):
     return Response(_cart_payload(request.user))
 
 
+@extend_schema(methods=["GET"], tags=["orders"], responses=OrderSerializer(many=True))
+@extend_schema(
+    methods=["POST"],
+    tags=["orders"],
+    summary="Check out the cart",
+    request=None,
+    responses={
+        201: OrderSerializer,
+        400: OpenApiResponse(description="The cart is empty."),
+        409: OpenApiResponse(description="Not enough stock for one or more products."),
+    },
+)
 @api_view(["GET", "POST"])
 @permission_classes([permissions.IsAuthenticated])
 def orders(request):

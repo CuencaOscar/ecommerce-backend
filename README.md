@@ -19,7 +19,8 @@ It is the backend of [ecommerce-frontend](https://github.com/CuencaOscar/ecommer
 - **Checkout:** creates the order inside a transaction with row locks, snapshots product names and prices,
   decrements stock and empties the cart; returns `409` if stock ran out in the meantime.
 - **Orders:** each customer sees only their own order history. Orders are manageable from the Django admin.
-- 16 API tests and a GitHub Actions workflow that also checks for missing migrations.
+- **Interactive docs:** OpenAPI 3 schema generated with drf-spectacular, browsable in Swagger UI and ReDoc.
+- 17 API tests and a GitHub Actions workflow that also checks for missing migrations.
 
 ## API
 
@@ -39,6 +40,16 @@ It is the backend of [ecommerce-frontend](https://github.com/CuencaOscar/ecommer
 | `POST` | `/api/orders/` | User | Check out the cart |
 
 Authenticated requests send `Authorization: Bearer <access token>`.
+
+### Interactive documentation
+
+With the server running, the full OpenAPI 3 contract is available at:
+
+- **Swagger UI:** `http://127.0.0.1:8000/api/docs/` (use *Authorize* with an access token to try protected endpoints)
+- **ReDoc:** `http://127.0.0.1:8000/api/redoc/`
+- **Schema:** `http://127.0.0.1:8000/api/schema/`
+
+![Swagger UI generated from the OpenAPI schema](docs/swagger-ui.png)
 
 ## Getting started
 

@@ -1,4 +1,5 @@
-from rest_framework import permissions, status
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import permissions, serializers, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -11,6 +12,14 @@ def _tokens_for(user):
     return {"refresh": str(refresh), "access": str(refresh.access_token)}
 
 
+@extend_schema(
+    tags=["auth"],
+    auth=[],
+    request=RegisterSerializer,
+    responses={201: inline_serializer("RegisterResponse", {
+        "user": UserSerializer(), "refresh": serializers.CharField(), "access": serializers.CharField(),
+    })},
+)
 @api_view(["POST"])
 @permission_classes([permissions.AllowAny])
 def register(request):
@@ -21,6 +30,7 @@ def register(request):
     return Response({"user": UserSerializer(user).data, **_tokens_for(user)}, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=["auth"], responses=UserSerializer)
 @api_view(["GET"])
 @permission_classes([permissions.IsAuthenticated])
 def me(request):
