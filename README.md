@@ -57,6 +57,6 @@ products/
 
 User accounts, shopping cart and orders.
 
----
+## License
 
-**Oscar Cuenca** · [LinkedIn](https://www.linkedin.com/in/ocuenca-moreno/)
+[MIT](LICENSE) © Oscar Cuenca · [LinkedIn](https://www.linkedin.com/in/ocuenca-moreno/)
