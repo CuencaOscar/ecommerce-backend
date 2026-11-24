@@ -1,57 +1,60 @@
-# Ecommerce Backend Project
+# E-commerce Backend 🛒
 
-## Description
-This backend part of the Ecommerce project is designed to manage product listings, user authentication, shopping cart functionalities, and order processing. It's built using Django and Django REST Framework to provide a robust API for the frontend part.
+REST API for the product catalog of an online store, built with **Django** and **Django REST Framework**
+on **PostgreSQL**. It is the backend of [ecommerce-frontend](https://github.com/CuencaOscar/ecommerce-frontend).
+
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-REST_Framework-092E20?logo=django&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
 
 ## Features
-- **Product Catalog:** Manage a catalog of products with descriptions, prices, and images.
-- **User Management:** Handle user sign-up, login, and profile management.
-- **Shopping Cart:** Users can add products to their shopping cart and checkout.
-- **Order Processing:** Process orders and manage order statuses.
-- **Payment Integration:** Interface with payment gateways for transaction processing.
 
-## Technologies Used
-- **Framework:** Django, Django REST Framework
-- **Database:** PostgreSQL
-- **Authentication:** Django's built-in authentication system & JWT for APIs
-- **Other:** CORS headers for API security
+- Product catalog with name, description, price, stock and creation date.
+- Full CRUD through DRF views with explicit status codes.
+- Settings split per environment: `local`, `development` and `production`.
+- Secret key read from the environment and CORS enabled for the web client.
+- Django admin for managing products.
 
-## Project Setup
+## API
 
-### Requirements
-- Python 3.8 or higher
-- Django 3.2 or higher
-- Django REST Framework
-- PostgreSQL
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/api/products/` | List all products |
+| `POST` | `/api/products/` | Create a product (`name`, `description`, `price`, `stock`) |
+| `GET` | `/api/products/<id>/` | Product detail |
+| `PUT` | `/api/products/<id>/` | Update a product |
+| `DELETE` | `/api/products/<id>/` | Delete a product |
 
-### Installation and Setup
+## Getting started
 
-1. Clone the repository and navigate to the backend directory.
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Setup your PostgreSQL database.
-4. Run database migrations:
-   ```bash
-   python manage.py migrate
-   ```
-5. Start the development server by specifying the environment using the `--settings` option:
-   - For local development:
-     ```bash
-     python manage.py runserver --settings=ecommerce.settings.local
-     ```
-   - For development environment:
-     ```bash
-     python manage.py runserver --settings=ecommerce.settings.development
-     ```
-   - For production environment:
-     ```bash
-     python manage.py runserver --settings=ecommerce.settings.production
-     ```
+Requirements: Python 3.10+ and a PostgreSQL database.
 
-## Contributing
-Contributions are welcome. Please refer to the CONTRIBUTING.md file for more details.
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env                                # set DJANGO_SECRET_KEY
+# Set your database credentials in ecommerce/settings/local.py
+python manage.py migrate --settings=ecommerce.settings.local
+python manage.py runserver --settings=ecommerce.settings.local
+```
 
-## License
-This project is licensed under the MIT License. See the LICENSE.md file for more details.
+## Project structure
+
+```
+ecommerce/
+├── settings/      # base, local, development, production
+└── urls.py        # /admin and /api routes
+products/
+├── models.py      # Product model
+├── serializers.py # ProductSerializer
+├── views.py       # List/create and detail/update/delete endpoints
+└── urls.py
+```
+
+## Roadmap
+
+User accounts, shopping cart and orders.
+
+---
+
+**Oscar Cuenca** · [LinkedIn](https://www.linkedin.com/in/ocuenca-moreno/)
