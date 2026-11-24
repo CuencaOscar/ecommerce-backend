@@ -1,10 +1,20 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Product
 from .serializers import ProductSerializer
 
+
+class IsStaffOrReadOnly(BasePermission):
+    """Anyone can browse the catalog; only staff users can change it."""
+
+    def has_permission(self, request, view):
+        return request.method in SAFE_METHODS or bool(request.user and request.user.is_staff)
+
+
 @api_view(['GET', 'POST'])
+@permission_classes([IsStaffOrReadOnly])
 def products_list(request):
     """
     Handle GET and POST requests for the product list.
@@ -33,6 +43,7 @@ def products_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsStaffOrReadOnly])
 def product_detail(request, pk):
     """
     Handle GET, PUT, and DELETE requests for a single product.
