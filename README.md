@@ -3,7 +3,7 @@
 REST API for the product catalog of an online store, built with **Django** and **Django REST Framework**
 on **PostgreSQL**. It is the backend of [ecommerce-frontend](https://github.com/CuencaOscar/ecommerce-frontend).
 
-![Python](https://img.shields.io/badge/Python_3.10%2B-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django_REST_Framework-092E20?logo=django&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
 
