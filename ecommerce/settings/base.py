@@ -2,13 +2,14 @@
 Base settings for ecommerce project.
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^v@u8bw%9%o9f#l38aj(0ggs$+$x&h^^!4-nh6012ce@$cffjs'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-insecure-key-change-me')
 
 # Application definition
 INSTALLED_APPS = [
