@@ -13,7 +13,8 @@ It is the backend of [ecommerce-frontend](https://github.com/CuencaOscar/ecommer
 
 ## Features
 
-- **Catalog:** public product listing and detail; only staff users can create, edit or delete products.
+- **Catalog:** public product listing and detail with product photos (`image_url`); only staff users can create,
+  edit or delete products. `seed_products` loads an 8-item demo catalog.
 - **Accounts:** sign-up with Django password validation, email + password sign-in with JWT access/refresh tokens.
 - **Cart:** one cart per user stored in the database, quantities validated against stock.
 - **Checkout:** creates the order inside a transaction with row locks, snapshots product names and prices,

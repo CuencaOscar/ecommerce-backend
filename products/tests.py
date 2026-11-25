@@ -40,3 +40,14 @@ class ApiDocsTests(APITestCase):
         for path in ("/api/products/", "/api/auth/token/", "/api/cart/", "/api/orders/"):
             self.assertIn(path, paths)
         self.assertEqual(self.client.get("/api/docs/").status_code, 200)
+
+
+class SeedProductsTests(APITestCase):
+    def test_demo_catalog_has_photos_and_is_idempotent(self):
+        from django.core.management import call_command
+
+        call_command("seed_products", verbosity=0)
+        call_command("seed_products", verbosity=0)
+        products = self.client.get("/api/products/").json()
+        self.assertEqual(len(products), 8)
+        self.assertTrue(all(p["image_url"].startswith("https://images.unsplash.com/") for p in products))
