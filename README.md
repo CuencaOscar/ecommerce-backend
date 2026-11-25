@@ -9,7 +9,10 @@ It is the backend of [ecommerce-frontend](https://github.com/CuencaOscar/ecommer
 ![Django](https://img.shields.io/badge/Django_REST_Framework-092E20?logo=django&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
 
-![Products endpoint in the DRF browsable API](docs/api-products.png)
+![Swagger UI generated from the OpenAPI schema](docs/swagger-ui.png)
+
+Powers the **[Shopfront live demo](https://cuencaoscar.github.io/ecommerce-frontend/)** (the demo build runs an
+in-browser copy of this API).
 
 ## Features
 
@@ -49,8 +52,6 @@ With the server running, the full OpenAPI 3 contract is available at:
 - **Swagger UI:** `http://127.0.0.1:8000/api/docs/` (use *Authorize* with an access token to try protected endpoints)
 - **ReDoc:** `http://127.0.0.1:8000/api/redoc/`
 - **Schema:** `http://127.0.0.1:8000/api/schema/`
-
-![Swagger UI generated from the OpenAPI schema](docs/swagger-ui.png)
 
 ## Getting started
 
